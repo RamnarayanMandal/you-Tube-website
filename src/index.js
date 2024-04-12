@@ -1,13 +1,28 @@
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import connectDB from './db/index.js';
+import {app} from './app.js'
 
 dotenv.config({
-    path: './.env' // Specify the file extension .env
+    path: './.env' 
 });
 
-// export const DB_NAME = "Youtube";
-// export const PORT = 8000;
-// export const MONGODB_URL = "mongodb://ramnarayan:Ram@1234@cluster0.hk4ehir.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const port=process.env.PORT||8080;
 
-connectDB();
+
+connectDB().then(()=>{
+    
+    app.on('error',(error)=>{
+        console.log("Error in server: "+error);
+        throw error;
+    })
+
+    app.listen(port,()=>{
+        console.log(`Server is running on port ${port}`)
+
+    })
+
+})
+.then((error)=>{
+    console.log("MongoDB Connection failed !!! " + error);
+});
