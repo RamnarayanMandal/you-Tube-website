@@ -74,7 +74,7 @@ userSchema.methods.generateAcessToken = async function(){
         email:this.email,
         fullName:this.fullName,
         },
-        process.env.ACCESS_TOKEN_SCERET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
@@ -84,9 +84,9 @@ userSchema.methods.generateAcessToken = async function(){
 userSchema.methods.generateRefreshToken = async function(){
     const token = jsonwebtoken.sign(
         {_id:this._id },
-        process.env.REFERESH_TOKEN_SCERET,
+        process.env.REFRESH_TOKEN_SECRET,
         {
-          expiresIn: process.env.REFERESH_TOKEN_EXPIRY
+          expiresIn: process.env.REFRESH_TOKEN_EXPIRY
         }
     )
     return token
