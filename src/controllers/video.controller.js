@@ -5,7 +5,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {uploadOnCloudiner} from "../utils/cloudinary.js"
-import ffprobe from 'node-ffprobe'
+
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -153,6 +153,31 @@ const deleteVideo = asyncHandler(async (req, res) => {
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
     const { videoId } = req.params
+    if(!videoId){
+        throw new ApiError(400, "Video ID is required");
+    }
+
+   const {isPublished} = req.body
+
+   if(!isPublished){
+    throw new ApiError(400, "isPublished is required");
+   }
+   
+    const video = await Video.findByIdAndUpdate(
+        videoId,
+        { $set: {isPublished} },
+        { new: true } 
+    );
+
+    if(!video){
+        throw new ApiError(404, "Video doesnot exit");
+    }
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            video,
+            "Video published/unpublished successfully"
+        ))
 })
 
 export {

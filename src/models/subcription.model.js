@@ -1,4 +1,4 @@
-import { Timestamp } from "mongodb";
+
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
@@ -12,14 +12,7 @@ const subcriptionSchema = new Schema({
         ref: "User",
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-},{Timestamps:true})
+
+},{timestamps:true})
 
 export const Subcription = new mongoose.model("Subcription",subcriptionSchema)
