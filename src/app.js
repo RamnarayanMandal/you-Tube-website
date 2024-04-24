@@ -22,6 +22,7 @@ import userRouter from './routes/user.route.js'
 import videoRouter from "./routes/video.route.js"
 import subscriptionRouter from "./routes/subcription.route.js"
 import playlistRouter from "./routes/playList.route.js"
+import likeRouter from "./routes/like.route.js"
 
 
 // routes declarations
@@ -29,6 +30,7 @@ app.use('/api/v1/user',userRouter)
 app.use("/api/v1/videos", videoRouter)
 app.use("/api/v1/subscriptions", subscriptionRouter)
 app.use("/api/v1/playlist", playlistRouter)
+app.use("/api/v1/like", likeRouter)
 
 // http://localhost:8000/api/v1/user/register
 
