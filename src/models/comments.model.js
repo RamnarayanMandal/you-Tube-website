@@ -11,8 +11,14 @@ const commentsSchema = new  mongoose.Schema({
     video: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Video',
-        required: [true, 'video is required']
+       
     },
+    tweet:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tweets',
+
+    },
+
     comment: {
         type: String,
         required: [true, 'comment is required']
