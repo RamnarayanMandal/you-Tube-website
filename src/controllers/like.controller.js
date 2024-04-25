@@ -164,7 +164,17 @@ const toggleTweetDisLike = asyncHandler(async (req, res) => {
 
 // Get all liked videos
 const getLikedVideos = asyncHandler(async (req, res) => {
-    // TODO: Implement logic to get all liked videos
+    try {
+
+        const likes = await Like.find({ likeBy: req.user._id });
+
+       
+        const videoIds = likes.map(like => like.video);
+
+        return res.status(200).json(new ApiResponse(200, videoIds, "Liked videos fetched successfully"));
+    } catch (error) {
+        throw new ApiError(500, error.message);
+    }
 });
 
 export {

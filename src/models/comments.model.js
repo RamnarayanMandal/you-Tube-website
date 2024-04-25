@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2'
 
 const commentsSchema = new  mongoose.Schema({
-    commenter: {
+    commentBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'commenter is required']
