@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import img from '../../src/assets/sideimg.png';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+import { singupActions } from "../store/singup.slice";
 
 export default function Signup() {
+  const dispatch = useDispatch();
   const firstNameRef = useRef("");
   const lastNameRef = useRef("");
   const emailRef = useRef("");
@@ -12,8 +17,7 @@ export default function Signup() {
   const avatarRef = useRef(null);
   const coverImageRef = useRef(null);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const responseMessageRef = useRef("");
-  const navigate = useNavigate();
+  const [SingUpData , setSingUpData] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,21 +36,48 @@ export default function Signup() {
             'Content-Type': 'multipart/form-data',
           },
         });
-        responseMessageRef.current = response.data.message; // Store response message
-        navigate("/");
+        setSingUpData(response.data);
+        dispatch(singupActions.SingUpData(response.data));
+        toast.success("Registration successful!",  {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+          });
+        if(response.status===409){
+          toast.error("user already exits",  {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+            });
+        }
       } catch (error) {
         console.error("Registration failed:", error);
-        responseMessageRef.current = "Registration failed. Please try again."; // Set error message
+        toast.error(error.response.data.message || "Registration failed. Please try again.",
+      );
       }
-    }
-  };
+    };
+  }
 
   const handlePasswordChange = () => {
     setPasswordsMatch(passwordRef.current.value === confirmPasswordRef.current.value);
   };
 
   return (
-    <div className="flex flex-col lg:flex-row mx-auto p-10 rounded w-full gap-10 bg-slate-100 ">
+    <>
+    <ToastContainer />
+    <div className="flex flex-col lg:flex-row mx-auto p-10 rounded w-full gap-10 bg-gray-200 ">
       <div className="lg:w-1/2 lg:flex block">
         <img
           className="rounded-r h-full object-cover"
@@ -54,7 +85,7 @@ export default function Signup() {
           alt=""
         />
       </div>
-      <div className="w-full lg:w-1/3 p-4 lg:px-10 py-5  overflow-hidden bg-white rounded h-1/2 shadow-xl">
+      <div className="w-full lg:w-1/3 p-4 px-10 py-5  overflow-hidden bg-white rounded h-1/2 shadow-xl">
         <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign up 
         </h2>
@@ -158,10 +189,12 @@ export default function Signup() {
             </button>
           </div>
         </form>
-        {responseMessageRef.current && (
-          <div className="mt-4 text-sm text-gray-700">{responseMessageRef.current}</div>
-        )}
+  
+       <div className="text-center my-2">
+       <Link to="/login" className=" text-sm" >Already have an account? <span className="text-blue-500">Sign In</span></Link>
+       </div>
       </div>
     </div>
+    </>
   );
 }

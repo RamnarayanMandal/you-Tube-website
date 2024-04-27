@@ -28,7 +28,7 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 // user registration fuction
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, username, password } = req.body;
-  console.log(fullName, email, username, password);
+  // console.log(fullName, email, username, password);
 
   if (!fullName) {
     throw new ApiError(400, "fullName is required");
@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({ $or: [{ username }, { email }] });
 
   if (existedUser) {
-    throw new ApiError(409, "this user already exists");
+    throw new ApiError(409, " user already exists");
   }
 
   const avatarLocalPath = req.files?.avatar[0]?.path;

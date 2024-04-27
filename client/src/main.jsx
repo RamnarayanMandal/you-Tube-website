@@ -7,6 +7,8 @@ import Dasbord from './pages/Dasbord.jsx';
 import SingUp from "./pages/Singup.jsx";
 import App from './App.jsx';
 import   '../src/index.css';
+import {Provider} from 'react-redux';
+import youtubestore from './store/index.js';
 
 
 
@@ -26,9 +28,9 @@ const router = createBrowserRouter([
 // Render the router using ReactDOM
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-   
+   <Provider store={youtubestore}>
     <RouterProvider router={router} />
-  
+    </Provider>
   </React.StrictMode>
 );
 
