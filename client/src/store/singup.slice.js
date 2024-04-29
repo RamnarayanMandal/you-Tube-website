@@ -2,11 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const singupSlice = createSlice({
     name: "singup",
-    initialState: {
-        name: "",
-        email: "",
-        password: ""
-    },
+    initialState: {singupData:0},
     reducers: {
         singup: (state, action) => {
             return action.payload;

@@ -362,54 +362,70 @@ return res
 // get user channel
 const getUserChannelProfile = asyncHandler(async(req, res) => {
   const { username } = req.params;
+  // console.log(username)
 
   if (!username?.trim()) {
       throw new ApiError(400, "Username is missing");
   }
 
   const channel = await User.aggregate([
-      {
-          $match: { username: username?.toLowerCase() }
-      },
-      {
-          $lookup: {
-              from: "Subcriptions",
-              localField: "_id",
-              foreignField: "channel",
-              as: "subscribers"
-          }
-      },
-      {
-          $lookup: {
-              from: "Subcriptions",
-              localField: "_id",
-              foreignField: "subscribers",
-              as: "subscribedTO"
-          }
-      },
-      {
-          $addFields: {
-              SubcriberCount: { $size: "$subscribers" },
-              channelSubscribedTOCount: { $size: "$subscribedTO" },
-              isSubscribed: {
-                  $in: [req.user?._id, "$subscribers.subscriber"]
-              }
-          }
-      },
-      {
-          $project: {
-              fullName: 1,
-              username: 1,
-              email: 1,
-              avatar: 1,
-              coverImage: 1,
-              isSubscribed: 1,
-              SubcriberCount: 1,
-              channelSubscribedTOCount: 1,
-              createAt: 1
-          }
+    {
+      "$match": { username: username?.toLowerCase() }
+    },
+    {
+      "$lookup": {
+        "from": "Subscriptions",
+        "localField": "_id",
+        "foreignField": "channel",
+        "as": "subscribers"
       }
-  ]);
+    },
+    {
+      "$lookup": {
+        "from": "Subscriptions",
+        "localField": "_id",
+        "foreignField": "subscribers",
+        "as": "subscribedTO"
+      }
+    },
+    {
+      "$lookup": {
+        "from": "videos",
+        "localField": "_id",
+        "foreignField": "owner",
+        "as": "uploadvideo"
+      }
+    },
+    {
+      "$addFields": {
+        "SubcriberCount": { "$size": "$subscribers" },
+        "channelSubscribedTOCount": { "$size": "$subscribedTO" },
+        "uploadvideoCount": { "$size": "$uploadvideo" },
+        "isSubscribed": {
+          "$in": [req.user?._id, "$subscribers.subscriber"]
+
+        }
+      }
+    },
+    {
+      "$project": {
+        "fullName": 1,
+        "username": 1,
+        "email": 1,
+        "avatar": 1,
+        "coverImage": 1,
+        "subscribers": 1,
+        "subscribedTO": 1,
+        "uploadvideo": 1,
+        "SubcriberCount": 1,
+        "uploadvideoCount": 1,
+        "isSubscribed": 1,
+        "channelSubscribedTOCount": 1,
+        "createdAt": 1
+      }
+    }
+  ]
+  );
 
   if (!channel?.length) {
       throw new ApiError(404, "Channel doesn't exist");

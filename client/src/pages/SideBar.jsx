@@ -13,38 +13,67 @@ import { IoIosNotifications } from "react-icons/io";
 import { RiVideoUploadFill } from "react-icons/ri";
 import { IoLogIn } from "react-icons/io5";
 import {Link, useNavigate} from "react-router-dom"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { loginActions } from "../store/Login.slice";
 
 const SideBar = () => {
   const {loginData} = useSelector((store)=> store.login)
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     const token = localStorage.getItem("accessToken");
-    console.log(token);
 
     try {
-      const response = await axios.post(`/v1/user/logout/token/${token}`,
+      const response = await axios.post("/v1/user/logout",
       { 
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       }
+      
     );
-      console.log(response);
+    dispatch(loginActions.Logout(null));
+    toast.success("Logout successful!",  {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+     
+      });
+
     } catch (error) {
       console.error('Error logging out:', error);
+      toast.error(error.response.data.message || "logout failed. Please try again.",{
+        position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      }
+      );
     }
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    navigate("/login");
+    localStorage.removeItem("user_id");
+
   };
 
   return (
-
-    <div className="w-60 overflow-y-auto "
+    <>
+    <ToastContainer />
+    <div className="w-60 overflow-y-auto  mt-0"
     style={{
       maxHeight: "calc(100vh - 64px)", 
     }}>
@@ -69,10 +98,18 @@ const SideBar = () => {
         </div>
         <div className="flex justify-center content-center items-center">
           <div className="text-3xl ">
-            <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
+          {!loginData?(<Link 
+            to="/login" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <IoIosContact className="my-1 text-gray-400" />
               <p className="text-sm">Your Channel </p>
-            </div>
+            </Link>):(
+              <Link 
+              to="/channel" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
+                <IoIosContact className="my-1 text-gray-400" />
+                <p className="text-sm">Your Channel </p>
+              </Link>
+            )
+}
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <LuHistory className="my-1 text-gray-400" />
               <p className="text-sm">History </p>
@@ -114,6 +151,7 @@ const SideBar = () => {
         
       </div>
     </div>
+    </>
   );
 };
 

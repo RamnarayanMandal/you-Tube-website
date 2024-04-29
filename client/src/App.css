@@ -1,3 +1,19 @@
 .button-color{
     background: none;
 }
+
+.profile-image{
+    width: 28vmin;
+    height: 28vmin;
+    border-radius: 50%;
+    
+}
+
+.home-button:hover{
+    padding-bottom: 10px;
+    
+    border-bottom: 2px solid rgb(11, 72, 239);
+    
+    
+
+}

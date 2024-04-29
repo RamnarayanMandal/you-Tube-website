@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 export function NavBar() {
   const { loginData } = useSelector((store) => store.login);
-  console.log(loginData);
+  // console.log(loginData);
   const [openNav, setOpenNav] = React.useState(false);
 
   // Check if loginData and its nested properties exist

@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "../store/Login.slice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const dispatch = useDispatch();
@@ -18,18 +20,43 @@ function Login() {
 
     try {
       const response = await axios.post("/v1/user/login", { email, password });
-      console.log(response.data);
       setLogininfo(response.data);
       localStorage.setItem("accessToken", response.data.message.accessToken);
       localStorage.setItem("refreshToken", response.data.message.refreshToken);
+      // console.log(response.data.message.user._id);
+      localStorage.setItem("user_id", response.data.message.user._id);
       dispatch(loginActions.LoginData({ loginData: response.data }));
+      toast.success("Login successful!",  {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+       
+        });
       navigate("/");
     } catch (error) {
       console.error("Error logging in:", error);
+      toast.error(error.response.data.message || "login failed. Please try again.",{
+        position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      }
+      );
     }
   };
 
   return (
+    <>
+    <ToastContainer />
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-100 px-4 ">
       <div className="w-full md:w-1/2 lg:w-2/3 xl:w-3/4 2xl:w-4/5">
         <img
@@ -98,6 +125,7 @@ function Login() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

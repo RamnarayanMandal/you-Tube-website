@@ -9,6 +9,8 @@ import App from './App.jsx';
 import   '../src/index.css';
 import {Provider} from 'react-redux';
 import youtubestore from './store/index.js';
+import YourChannel from './pages/YourChannel.jsx';
+
 
 
 
@@ -20,7 +22,9 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Dasbord /> },
       { path: '/login', element: <Login /> },
-      { path: '/signup', element: <SingUp /> }
+      { path: '/signup', element: <SingUp /> },
+      { path: '/channel', element: <YourChannel /> },
+    
     ]
   }
 ]);
