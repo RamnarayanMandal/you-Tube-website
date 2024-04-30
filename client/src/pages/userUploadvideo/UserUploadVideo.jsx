@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThreeDotModal } from '../utils/ThreeDotModal';
+import { ThreeDotModal } from '../../utils/modal/ThreeDotModal';
 
 
 function calculateDuration(updatedAtDate) {

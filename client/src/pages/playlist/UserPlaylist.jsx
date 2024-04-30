@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ThreeDotModal } from "../utils/ThreeDotModal";
+import  {DropDrownPlaylist}  from "../../utils/modal/DropDrownPlaylist";
+
 
 function calculateDuration(updatedAtDate) {
   const currentDate = new Date();
@@ -79,7 +80,7 @@ const UserPlaylist = () => {
             </div>
           </div>
           <div className="pt-5 cursor-pointer">
-            <ThreeDotModal />
+            <DropDrownPlaylist />
           </div>
         </div>
       ))}

@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from "./pages/Login.jsx";
-import Dasbord from './pages/Dasbord.jsx';
 import SingUp from "./pages/Singup.jsx";
 import App from './App.jsx';
 import   '../src/index.css';
 import {Provider} from 'react-redux';
 import youtubestore from './store/index.js';
-import YourChannel from './pages/YourChannel.jsx';
+import YourChannel from './pages/userchannel/YourChannel.jsx';
+import Dasbord from './pages/dashbord/Dasbord.jsx';
 
 
 

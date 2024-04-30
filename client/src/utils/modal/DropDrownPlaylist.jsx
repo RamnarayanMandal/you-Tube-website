@@ -2,19 +2,16 @@ import React from "react";
 import {
   Button,
   Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
 } from "@material-tailwind/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { List, ListItem, Card } from "@material-tailwind/react";
 import { RiPlayList2Fill } from "react-icons/ri";
 import { LuHistory } from "react-icons/lu";
-import { MdPlaylistAdd } from "react-icons/md";
-import { MdOutlineFileDownload } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { IoMdShareAlt } from "react-icons/io";
+import { FaEdit } from "react-icons/fa";
 
-export function ThreeDotModal() {
+export function DropDrownPlaylist() {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(!open);
@@ -32,22 +29,17 @@ export function ThreeDotModal() {
           <List>
             <ListItem className=" gap-5">
               <RiPlayList2Fill className="text-2xl" />
-              Add to queue
+              view full playlist
             </ListItem>
             <ListItem className=" gap-5">
               {" "}
-              <LuHistory className="text-2xl" />
-              Save to Watch later
+              <FaEdit className="text-2xl" />
+               Edit playlist
             </ListItem>
             <ListItem className=" gap-5">
               {" "}
-              <MdPlaylistAdd className="text-2xl" />
-              Save to playlist
-            </ListItem>
-            <ListItem className=" gap-5">
-              {" "}
-              <MdOutlineFileDownload className="text-2xl" />
-              Download
+              <MdDelete  className="text-2xl" />
+              Delete Playlist
             </ListItem>
             <ListItem className=" gap-5">
               {" "}

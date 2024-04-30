@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { userChannelActions } from '../store/UserChannel';
-import LoadingSpiner from '../utils/LoadingSpiner';
-import UserUploadVideo from '../pages/UserUploadVideo';
-import UserPlaylist from './UserPlaylist';
+import UserPlaylist from '../pages/playlist/UserPlaylist';
+import LoadingSpiner from '../utils/modal/LoadingSpiner';
+import UserUploadVideo from '../pages/userUploadvideo/UserUploadVideo';
+
+
 
 const UserProfile = () => {
     const dispatch = useDispatch();
