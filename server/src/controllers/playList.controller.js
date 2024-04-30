@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Playlist } from "../models/playList.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -42,13 +43,35 @@ const getPlaylistById = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Playlist ID is required");
     }
 
-    const playlist = await Playlist.findById(playlistId);
-    if (!playlist) {
-        throw new ApiError(404, "Playlist not found");
-    }
+    try {
+        const playlist = await Playlist.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(playlistId)
+                }
+            },
+            {
+                $lookup: {
+                    from: "videos",
+                    localField: "videos",
+                    foreignField: "_id",
+                    as: "videosDetails"
+                }
+            }
+        ]);
 
-    return res.status(200).json(new ApiResponse(200, playlist, "Playlist fetched successfully"));
+
+        if (playlist.length === 0) {
+            throw new ApiError(404, "Playlist not found");
+        }
+
+        return res.status(200).json(new ApiResponse(200, playlist[0], "Playlist fetched successfully"));
+    } catch (error) {
+        console.error("Error fetching playlist:", error); // Log detailed error
+        throw new ApiError(500, "Internal Server Error");
+    }
 });
+
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
