@@ -10,6 +10,7 @@ import {Provider} from 'react-redux';
 import youtubestore from './store/index.js';
 import YourChannel from './pages/userchannel/YourChannel.jsx';
 import Dasbord from './pages/dashbord/Dasbord.jsx';
+import ViewFullPlaylist from './pages/playlist/ViewFullPlaylist.jsx';
 
 
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
       { path: '/channel', element: <YourChannel /> },
+      {path: '/viewfullplaylist', element: <ViewFullPlaylist/>}
     
     ]
   }

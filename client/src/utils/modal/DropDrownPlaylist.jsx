@@ -10,6 +10,7 @@ import { LuHistory } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { IoMdShareAlt } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export function DropDrownPlaylist() {
   const [open, setOpen] = React.useState(false);
@@ -29,7 +30,7 @@ export function DropDrownPlaylist() {
           <List>
             <ListItem className=" gap-5">
               <RiPlayList2Fill className="text-2xl" />
-              view full playlist
+              <Link to='/viewfullplaylist'>view full playlist</Link>
             </ListItem>
             <ListItem className=" gap-5">
               {" "}

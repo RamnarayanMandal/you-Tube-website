@@ -1,6 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import  {DropDrownPlaylist}  from "../../utils/modal/DropDrownPlaylist";
+import { useDispatch } from "react-redux";
+import { userPlaylistActions } from "../../store/userPlaylistSlice";
+import { VideoModal } from "../../utils/modal/VideoModal";
+
 
 
 function calculateDuration(updatedAtDate) {
@@ -24,6 +28,7 @@ function calculateDuration(updatedAtDate) {
 
 const UserPlaylist = () => {
   const [playlists, setPlaylists] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -38,6 +43,7 @@ const UserPlaylist = () => {
         });
 
         setPlaylists(response.data.message);
+        dispatch(userPlaylistActions.getuserPlaylist(response.data))
       } catch (error) {
         console.error("Error fetching playlists:", error);
       }
@@ -45,7 +51,15 @@ const UserPlaylist = () => {
 
     fetchPlaylists();
   }, []);
-
+    if(!playlists)
+    {
+      return(
+        <div className="flex justify-center items-center h-screen">
+        <VideoModal/>
+        </div>
+      )
+    }
+ 
   return (
     <div className="px-10">
       <h1 className="lg:text-2xl md:text-2xl text-xl font-serif font-semibold my-4">
@@ -57,10 +71,8 @@ const UserPlaylist = () => {
           className="mb-8 flex gap-4 lg:gap-10 md:gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap"
         >
           <div className="w-1/2 ">
-            <div className="w-full h-40 bg-gray-200 flex items-center justify-center rounded">
-              <p className="text-gray-600 text-2xl font-semibold">
-                {playlist.name}
-              </p>
+            <div className="w-full h-56 object-cover  bg-blue-gray-300 flex items-center justify-center rounded">
+              <img src="https://cdn3.iconfinder.com/data/icons/listening-music/512/music_6.png" alt="" className="w-72" />
             </div>
           </div>
           <div className="w-1/2 pt-2">

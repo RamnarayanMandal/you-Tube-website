@@ -74,7 +74,7 @@ const SideBar = () => {
   return (
     <>
     <ToastContainer />
-    <div className="w-60 overflow-y-auto  mt-0 fixed top-32"
+    <div className="w-60 overflow-y-auto fixed top-28"
     style={{
       maxHeight: "calc(100vh - 64px)", 
     }}>
