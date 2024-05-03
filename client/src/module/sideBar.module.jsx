@@ -20,10 +20,8 @@ export function SideBarModule() {
       <IoReorderThree className=" text-black text-4xl" />
 
       </Button>
-      <Drawer open={open} onClose={closeDrawer} className="p-4">
-        <div className="mb-6 flex items-center justify-between bg-white">
-        </div>
-        <Typography color="gray" className="mb-8 pr-4 font-normal bg-white">
+      <Drawer open={open} onClose={closeDrawer} className="p-4 z-50">
+        <Typography color="gray" className="mb-8 pr-4 font-normal">
          <SideBar/>
         </Typography>
       </Drawer>

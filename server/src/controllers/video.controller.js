@@ -1,6 +1,8 @@
 import mongoose, {isValidObjectId} from "mongoose"
 import {Video} from "../models/video.model.js"
 import {User} from "../models/user.model.js"
+import {Like} from "../models/likes.module.js"
+import {Comment} from "../models/comments.model.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
@@ -27,6 +29,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description, isPublished, thumbnail } = req.body;
+
     if (!title) {
         throw new ApiError(400, "Title is required");
     }
@@ -82,28 +85,104 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 
 const getVideoById = asyncHandler(async (req, res) => {
-    const { videoId } = req.params
-    if (!videoId)
-    {
+    const { videoId } = req.params;
+    if (!videoId) {
         throw new ApiError(400, "Video ID is required");
     }
 
+    // Define the aggregation pipeline for likes
+    const likesPipeline = [
+        {
+            $match: {
+                "video":new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $count: "totalLikes"
+        }
+    ];
+
+    // Define the aggregation pipeline for comments count
+    const commentsCountPipeline = [
+        {
+            $match: {
+                "video":new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $count: "totalComments"
+        }
+    ];
+
+    // Define the aggregation pipeline for comments
+    const commentsPipeline = [
+        {
+            $match: {
+                "video":new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup: {
+                from: "users", // Assuming your user collection is named "users"
+                localField: "commentBy",
+                foreignField: "_id",
+                as: "commenter"
+            }
+        },
+        {
+            $unwind: "$commenter"
+        },
+        {
+            $project: {
+                _id: 1,
+                comment: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                "commenter.username": 1,
+                "commenter.email": 1,
+                "commenter.fullName": 1,
+                "commenter.avatar": 1,
+                "commenter.coverImage": 1
+            }
+        }
+    ];
+
+    // Perform aggregation for likes
+    const likesResult = await Like.aggregate(likesPipeline);
+
+    // Perform aggregation for comments count
+    const commentsCountResult = await Comment.aggregate(commentsCountPipeline);
+
+    // Perform aggregation for comments
+    const commentsResult = await Comment.aggregate(commentsPipeline);
+
+    // Fetch video details
     const video = await Video.findById(videoId);
+
     if (!video) {
         throw new ApiError(404, "Video does not exist");
     }
-    
-    res.status(200)
-    .json(
+
+    // Construct response object
+    const response = {
+        video,
+        totalLikes: likesResult.length > 0 ? likesResult[0].totalLikes : 0,
+        totalComments: commentsCountResult.length > 0 ? commentsCountResult[0].totalComments : 0,
+        comments: commentsResult
+    };
+
+    res.status(200).json(
         new ApiResponse(
             200,
-            video,
-            "Video retrieved successfully"
+            response,
+            "Video details retrieved successfully"
         )
     );
+});
 
 
-})
+
+
 
 const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params;

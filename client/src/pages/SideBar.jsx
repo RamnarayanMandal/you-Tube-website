@@ -18,6 +18,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginActions } from "../store/Login.slice";
+import { UploadVideoModel } from "../utils/modal/UploadVideoModal";
 
 const SideBar = () => {
   const {loginData} = useSelector((store)=> store.login)
@@ -73,11 +74,11 @@ const SideBar = () => {
   return (
     <>
     <ToastContainer />
-    <div className="w-60 overflow-y-auto  mt-0"
+    <div className="w-60 overflow-y-auto  mt-0 fixed top-32"
     style={{
       maxHeight: "calc(100vh - 64px)", 
     }}>
-      <div className="text-3xl px-5  ">
+      <div className="text-3xl px-5  bg-white ">
         <Link to="/" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
           <FaHome className="my-1 text-gray-500" />
           <p className="text-sm">Home</p>
@@ -122,11 +123,21 @@ const SideBar = () => {
               <AiOutlineLike className="my-1 text-gray-400" />
               <p className="text-sm">Liked </p>
             </div>
-            <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <RiVideoUploadFill className="my-1 text-gray-400"/>
+            {
+              !loginData?(
+                <Link to="/login" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 py-2 rounded-lg">
+              <UploadVideoModel className="my-1 text-gray-400"/>
+              <p className="text-sm">Upload </p>
+            </Link>
+                
+              ):(
+                <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 py-2 rounded-lg">
+              <UploadVideoModel className="my-1 text-gray-400"/>
               <p className="text-sm">Upload </p>
             </div>
-            <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
+              )
+            }
+            <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg ">
               <IoIosNotifications className="my-1 text-gray-400" />
               <p className="text-sm">Natification </p>
             </div>

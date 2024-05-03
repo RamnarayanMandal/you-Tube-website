@@ -25,7 +25,7 @@ import playlistRouter from "./routes/playList.route.js"
 import likeRouter from "./routes/like.route.js"
 import commentRouter from "./routes/comment.route.js"
 import tweetRouter from "./routes/tweet.route.js"
-
+import dashboardRouter from "./routes/dashbord.route.js"
 
 // routes declarations
 app.use('/api/v1/user',userRouter)
@@ -35,7 +35,9 @@ app.use("/api/v1/playlist", playlistRouter)
 app.use("/api/v1/like", likeRouter)
 app.use("/api/v1/comment", commentRouter)
 app.use("/api/v1/tweet", tweetRouter)
+app.use("/api/v1/dashboard", dashboardRouter)
 
 // http://localhost:8000/api/v1/user/register
+
 
 export {app}
