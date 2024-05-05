@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import  {DropDrownPlaylist}  from "../../utils/modal/DropDrownPlaylist";
 import { useDispatch } from "react-redux";
-import { userPlaylistActions } from "../../store/userPlaylistSlice";
+import { UserPlaylistActions} from "../../store/userPlaylistSlice";
 import { VideoModal } from "../../utils/modal/VideoModal";
+import { Link } from "react-router-dom";
 
 
 
@@ -43,7 +44,7 @@ const UserPlaylist = () => {
         });
 
         setPlaylists(response.data.message);
-        dispatch(userPlaylistActions.getuserPlaylist(response.data))
+        dispatch(UserPlaylistActions.getuserPlaylist(response.data))
       } catch (error) {
         console.error("Error fetching playlists:", error);
       }
@@ -72,7 +73,9 @@ const UserPlaylist = () => {
         >
           <div className="w-1/2 ">
             <div className="w-full h-56 object-cover  bg-blue-gray-300 flex items-center justify-center rounded">
+              <Link to={`/viewfullplaylist/${playlist._id}`}>
               <img src="https://cdn3.iconfinder.com/data/icons/listening-music/512/music_6.png" alt="" className="w-72" />
+              </Link>
             </div>
           </div>
           <div className="w-1/2 pt-2">
@@ -92,7 +95,7 @@ const UserPlaylist = () => {
             </div>
           </div>
           <div className="pt-5 cursor-pointer">
-            <DropDrownPlaylist />
+            <DropDrownPlaylist playlistId={playlist._id} />
           </div>
         </div>
       ))}

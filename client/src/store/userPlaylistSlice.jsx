@@ -4,13 +4,22 @@ const userPlaylistSlice = createSlice({
     initialState:0,
     reducers: {
         getuserPlaylist: (state, action) => {
-            return  action.payload; // Update state immutably
+            // console.log(state,action);
+            return  action.payload; 
+        },
+        deleteuserPlaylist: (state, action) => {
+            return state.filter(playlist => playlist._id !== action.payload);
         }
+        ,
+        adduserPlaylist: (state, action) => {
+            return [...state, action.payload]; 
+        }
+
     }
 });
 
 
 
-export const userPlaylistActions = userPlaylistSlice.actions;
+export const UserPlaylistActions = userPlaylistSlice.actions;
 
 export default userPlaylistSlice;

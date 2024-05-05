@@ -10,6 +10,6 @@ const userChannelSlice = createSlice({
     }
 })
 
-export const userChannelActions = userChannelSlice.actions;
+export const UserChannelActions = userChannelSlice.actions;
 
 export default userChannelSlice;

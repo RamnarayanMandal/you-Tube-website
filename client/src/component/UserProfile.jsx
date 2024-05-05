@@ -5,6 +5,7 @@ import axios from 'axios';
 import UserPlaylist from '../pages/playlist/UserPlaylist';
 import LoadingSpiner from '../utils/modal/LoadingSpiner';
 import UserUploadVideo from '../pages/userUploadvideo/UserUploadVideo';
+import { UserChannelActions } from '../store/UserChannel';
 
 
 
@@ -27,7 +28,7 @@ const UserProfile = () => {
                 });
                 setUser(getUserProfile.data.message);
                 // console.log(getUserProfile.data.message.uploadvideo) // Set user state with data from API response
-                dispatch(userChannelActions.getuserChannel({ userChannel: getUserProfile.data }));
+                dispatch(UserChannelActions.getuserChannel({ userChannel: getUserProfile.data }));
             } catch (error) {
                 console.error("Error getting user profile:", error);
             }

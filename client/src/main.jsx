@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
       { path: '/channel', element: <YourChannel /> },
-      {path: '/viewfullplaylist', element: <ViewFullPlaylist/>}
+      {path: '/viewfullplaylist/:playlistId', element: <ViewFullPlaylist/>}
     
     ]
   }

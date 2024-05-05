@@ -29,7 +29,7 @@ function calculateDuration(updatedAtDate) {
 }
 
 const UserUploadVideo = ({ video }) => {
-  console.log('Uploading video', video);
+  // console.log('Uploading video', video);
   if (video.length === 0) {
     return (
       <div className='flex justify-center items-center content-center pt-20'>

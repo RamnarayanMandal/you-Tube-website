@@ -13,6 +13,7 @@ import { SideBarModule } from "../module/sideBar.module";
 import { useSelector } from "react-redux";
 import { UploadVideoModel } from "../utils/modal/UploadVideoModal";
 import { Link } from "react-router-dom";
+import Logout from "../component/Logout";
 
 export function NavBar() {
   const { loginData } = useSelector((store) => store.login);
@@ -55,8 +56,10 @@ export function NavBar() {
           <IoIosContact className="text-2xl" />
 
         )}
-        <p>{email}</p>
-        
+       {
+        loginData?(<Logout/> ):( <Link to={'/login'} className="cursor-pointer bg-green-700  px-3 py-2 rounded-lg text-white text-sm font-semibold">Login</Link>)
+       }
+       
         </div>
       </Typography>
     </ul>

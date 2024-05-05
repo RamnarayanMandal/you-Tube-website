@@ -11,14 +11,57 @@ import { MdDelete } from "react-icons/md";
 import { IoMdShareAlt } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { IoMdCreate } from "react-icons/io";
+import { CreatePlaylistModal } from "./CreatePlaylistModal";
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+import { UserPlaylistActions } from "../../store/userPlaylistSlice";
 
-export function DropDrownPlaylist() {
+export function DropDrownPlaylist({playlistId}) {
   const [open, setOpen] = React.useState(false);
-
   const handleOpen = () => setOpen(!open);
+  const token = localStorage.getItem("accessToken");
+  const dispatch = useDispatch();
+  //  console.log('DropDrownPlaylist',playlistId)
+  const handleDelete = async()=>{
+    try {
+      const res = await axios.delete(`/v1/playlist/${playlistId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data.message);
+     if( res.statusCode ==200){
+      dispatch(UserPlaylistActions.deleteuserPlaylist(res.data.message))
+       toast.success("Playlist deleted successfully!",  {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+     }
+    } catch (error) {
+      console.log(error);
+      toast.error(`Error deleting playlist plz try agin`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      
+    }
 
+  }
   return (
-    <>
+    <> 
+      <ToastContainer />
       <Button
         onClick={handleOpen}
         className="bg-white shadow-none hover:shadow-none "
@@ -28,24 +71,29 @@ export function DropDrownPlaylist() {
       <Dialog open={open} handler={handleOpen} className="w-full">
         <Card className=" shadow-none hover:shadow-none ">
           <List>
-            <ListItem className=" gap-5">
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }}>
               <RiPlayList2Fill className="text-2xl" />
-              <Link to='/viewfullplaylist'>view full playlist</Link>
+              <Link to={`/viewfullplaylist/${playlistId}`}>VIEW FULL PLAYLIST</Link>
             </ListItem>
-            <ListItem className=" gap-5">
+            
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }}>
               {" "}
-              <FaEdit className="text-2xl" />
-               Edit playlist
+             <CreatePlaylistModal action="Create playlist" />
+              
             </ListItem>
-            <ListItem className=" gap-5">
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }}>
               {" "}
-              <MdDelete  className="text-2xl" />
-              Delete Playlist
+              <CreatePlaylistModal action="Update playlist" />
             </ListItem>
-            <ListItem className=" gap-5">
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }} onClick={handleDelete}>
+              {" "}
+              <MdDelete  className="text-2xl"  />
+              DELETE PLAYLIST
+            </ListItem>
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }}>
               {" "}
               <IoMdShareAlt className="text-2xl" />
-              Share
+              SHARE
             </ListItem>
           </List>
         </Card>
