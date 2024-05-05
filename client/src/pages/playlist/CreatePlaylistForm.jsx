@@ -13,10 +13,14 @@ import { useDispatch } from "react-redux";
 import { UserPlaylistActions} from "../../store/userPlaylistSlice";
    
 export function CreatePlaylistForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState([{
     name: "",
     description: "",
-  });
+  }
+    
+  ]
+    
+  );
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch()
   const { name, description } = formData;
@@ -31,7 +35,7 @@ export function CreatePlaylistForm() {
               Authorization: `Bearer ${token}`,
             },
         })
-        console.log(response.data);
+        // console.log(response.data);
         setFormData(response.data.message);
         dispatch(UserPlaylistActions.adduserPlaylist(response.data.message));
         toast.success("Playlist is created successfully!", {

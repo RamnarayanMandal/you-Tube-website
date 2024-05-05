@@ -5,8 +5,10 @@ import {
 } from "@material-tailwind/react";
 
 import { FaEdit } from "react-icons/fa";
-import { CreatePlaylistForm } from "../../pages/playlist/CreatePlaylistForm";
+import {CreatePlaylistForm} from '../../pages/playlist/CreatePlaylistForm'
 import { UpdatePlaylistForm } from "../../pages/playlist/UpdatePlaylistForm";
+
+
 
 
 
@@ -30,7 +32,7 @@ export function CreatePlaylistModal({action}) {
           action === "Create playlist"? (
             <CreatePlaylistForm />
           ) : (
-            <UpdatePlaylistForm />
+            <UpdatePlaylistForm/>
           )
         }
       </Dialog>

@@ -116,8 +116,8 @@ const SideBar = () => {
               <p className="text-sm">History </p>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <RiPlayList2Fill className="my-1 text-gray-400" />
-              <p className="text-sm">Playlist </p>
+              <Link to="/playlist"><RiPlayList2Fill className="my-1 text-gray-400" />
+              <p className="text-sm">Playlist </p></Link>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <AiOutlineLike className="my-1 text-gray-400" />

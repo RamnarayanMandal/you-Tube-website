@@ -6,7 +6,7 @@ const viewFullPlaylistSlice = createSlice(
         initialState:0,
         reducers:{
             viewFullPlaylist: (state, action) => {
-                console.log(action)
+                // console.log(action)
                 return action.payload;
             }
         }

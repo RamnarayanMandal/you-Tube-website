@@ -35,7 +35,7 @@ const UserProfile = () => {
         };
       
         fetchData();
-    }, [dispatch,  username]);
+    }, []);
 
     if (!user) {
         return <LoadingSpiner/>; 

@@ -16,13 +16,14 @@ import { CreatePlaylistModal } from "./CreatePlaylistModal";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserPlaylistActions } from "../../store/userPlaylistSlice";
 
-export function DropDrownPlaylist({playlistId}) {
+export function DropDrownPlaylist({playlistId,playlistName}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
   const token = localStorage.getItem("accessToken");
+  const { loginData } = useSelector((store) => store.login);
   const dispatch = useDispatch();
   //  console.log('DropDrownPlaylist',playlistId)
   const handleDelete = async()=>{
@@ -59,6 +60,23 @@ export function DropDrownPlaylist({playlistId}) {
     }
 
   }
+
+  const handleSharePlaylist = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Check out this playlist!",
+          text: `Enjoy this playlist "${playlistName}" by ${loginData.message.user.fullName}`,
+          url: window.location.href, // You can replace this with the actual URL of your playlist
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+      // Fallback for browsers that do not support Web Share API
+      alert("Sorry, sharing is not supported on this browser.");
+    }
+  };
+
   return (
     <> 
       <ToastContainer />
@@ -90,10 +108,10 @@ export function DropDrownPlaylist({playlistId}) {
               <MdDelete  className="text-2xl"  />
               DELETE PLAYLIST
             </ListItem>
-            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }}>
+            <ListItem className=" gap-5" style={{ textTransform: "uppercase" }} onClick={handleSharePlaylist}>
               {" "}
               <IoMdShareAlt className="text-2xl" />
-              SHARE
+              SHARE 
             </ListItem>
           </List>
         </Card>

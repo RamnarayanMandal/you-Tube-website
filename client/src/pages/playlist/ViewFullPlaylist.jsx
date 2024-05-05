@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import { NavBar } from "../NavBar";
 import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { FaShuffle } from "react-icons/fa6";
 import { VideoModal } from "../../utils/modal/VideoModal";
 import ThreeDotModelPlaylist from "../../utils/modal/ThreeDotModelPlaylist";
 import { useParams } from "react-router-dom";
+import { AddVideoInplaylistModal } from "../../utils/modal/AddVideoInPlaylistModal";
 
 const ViewFullPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
@@ -18,7 +19,7 @@ const ViewFullPlaylist = () => {
   const { loginData } = useSelector((store) => store.login);
   const dispatch = useDispatch();
   const { playlistId } = useParams();
-  console.log(playlistId);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,20 +31,21 @@ const ViewFullPlaylist = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setPlaylist(response.data.message);
+        // console.log(response.data.message);
+        setPlaylist(response.data?.message);
         dispatch(
-          viewFullPlaylistActions.viewFullPlaylist(response.data.message)
+          viewFullPlaylistActions.viewFullPlaylist(response.data?.message)
         );
-        // console.log(response.data.message.videosDetails[0].videoFile);
+    
       } catch (error) {
         console.error("Error fetching playlist:", error);
       }
     };
 
-    if (userPlaylistData.message && userPlaylistData.message.length > 0) {
+    
       fetchData();
-    }
-  }, []);
+   
+  }, [playlistId, dispatch]);
 
   function calculateDuration(updatedAtDate) {
     const currentDate = new Date();
@@ -136,7 +138,7 @@ const ViewFullPlaylist = () => {
             </div>
             <h1 className="text-2xl pl-2 text-white mb-2 ">{playlist.name}</h1>
             <p className="text-md pl-2 text-gray-400 mb-2">
-              BY {loginData.message.user.fullName}
+              BY {loginData?.message?.user?.fullName}
             </p>
             <div className="text-sm pl-2 text-gray-400 flex items-center gap-2 mb-2">
               <p>{playlist?.videos?.length} videos </p>
@@ -151,7 +153,7 @@ const ViewFullPlaylist = () => {
                 className="bg-gray-400 bg-opacity-20 px-2 py-2 text-4xl rounded-full cursor-pointer"
                 onClick={handleDownloadPlaylist}
               />
-              <ThreeDotModelPlaylist className="bg-gray-400 bg-opacity-20 px-2 py-2 text-4xl rounded-full cursor-pointer" />
+              <ThreeDotModelPlaylist className="bg-gray-400 bg-opacity-20 px-2 py-2 text-4xl rounded-full cursor-pointer" playlistId={playlistId} />
             </div>
             <div className="text-white flex gap-5 mb-2">
               <button className="bg-gray-400 bg-opacity-50 px-6 py-2 text-md rounded-full  flex items-center gap-2">
@@ -206,6 +208,9 @@ const ViewFullPlaylist = () => {
                     <p className="text-gray-800 text-xs lg:text-xl md:text-sm">
                       {(video.duration / 60).toFixed(2)} min
                     </p>
+                  </div>
+                  <div>
+                    <AddVideoInplaylistModal playlistId={playlistId} videoId={video._id} action="remove"/>
                   </div>
                 </div>
               </div>

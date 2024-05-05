@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { UserPlaylistActions} from "../../store/userPlaylistSlice";
 import { VideoModal } from "../../utils/modal/VideoModal";
 import { Link } from "react-router-dom";
+import { CreatePlaylistModal } from "../../utils/modal/CreatePlaylistModal";
 
 
 
@@ -30,7 +31,7 @@ function calculateDuration(updatedAtDate) {
 const UserPlaylist = () => {
   const [playlists, setPlaylists] = useState([]);
   const dispatch = useDispatch();
-
+  // console.log(playlists)
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
@@ -52,14 +53,14 @@ const UserPlaylist = () => {
 
     fetchPlaylists();
   }, []);
-    if(!playlists)
-    {
-      return(
-        <div className="flex justify-center items-center h-screen">
-        <VideoModal/>
-        </div>
-      )
-    }
+  if (playlists.length === 0) {
+    return (
+      <div className="  w-full h-full mt-32 flex justify-center items-center content-center ">
+          <CreatePlaylistModal  action="Create playlist"/>
+      </div>
+    );
+  }
+  
  
   return (
     <div className="px-10">
@@ -95,7 +96,7 @@ const UserPlaylist = () => {
             </div>
           </div>
           <div className="pt-5 cursor-pointer">
-            <DropDrownPlaylist playlistId={playlist._id} />
+            <DropDrownPlaylist playlistId={playlist._id} playlistName={playlist.name} />
           </div>
         </div>
       ))}
