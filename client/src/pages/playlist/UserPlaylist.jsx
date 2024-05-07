@@ -73,9 +73,9 @@ const UserPlaylist = () => {
           className="mb-8 flex gap-4 lg:gap-10 md:gap-8 flex-wrap lg:flex-nowrap md:flex-nowrap"
         >
           <div className="w-1/2 ">
-            <div className="w-full h-56 object-cover  bg-blue-gray-300 flex items-center justify-center rounded">
+            <div className="w-full  object-cover  bg-blue-gray-300 flex items-center justify-center rounded">
               <Link to={`/viewfullplaylist/${playlist._id}`}>
-              <img src="https://cdn3.iconfinder.com/data/icons/listening-music/512/music_6.png" alt="" className="w-72" />
+              <img src="https://cdn3.iconfinder.com/data/icons/listening-music/512/music_6.png" alt="" className="lg:w-72 md:w-80  w-full" />
               </Link>
             </div>
           </div>

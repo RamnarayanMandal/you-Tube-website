@@ -5,6 +5,9 @@ import userChannelSlice from './UserChannel';
 import videoSlice from './getAllvideo.slice';
 import viewFullPlaylistSlice from './viewFullPlaylist.slice';
 import userPlaylistSlice from './userPlaylistSlice';
+import getUserUploadedVideoSlice from './getUserUploadedVideo.slice';
+
+
 
 
 
@@ -15,7 +18,8 @@ const youtubestore = configureStore({
        userChannel:userChannelSlice.reducer,
        video:videoSlice.reducer,
        userplaylist:userPlaylistSlice.reducer,
-       viewFullPlaylist:viewFullPlaylistSlice.reducer
+       viewFullPlaylist:viewFullPlaylistSlice.reducer,
+       userUploadedVideo:getUserUploadedVideoSlice
 
     }
 })

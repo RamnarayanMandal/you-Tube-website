@@ -6,6 +6,8 @@ import UserPlaylist from '../pages/playlist/UserPlaylist';
 import LoadingSpiner from '../utils/modal/LoadingSpiner';
 import UserUploadVideo from '../pages/userUploadvideo/UserUploadVideo';
 import { UserChannelActions } from '../store/UserChannel';
+import { UserUploadedVideoActions } from '../store/getUserUploadedVideo.slice';
+
 
 
 
@@ -15,6 +17,7 @@ const UserProfile = () => {
     const [activeTab, setActiveTab] = useState('home'); // State to track active tab
     const { loginData } = useSelector((store) => store.login);
     const username = loginData?.message?.user?.username.toLowerCase();
+    
 
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
@@ -27,8 +30,11 @@ const UserProfile = () => {
                     },
                 });
                 setUser(getUserProfile.data.message);
+                
                 // console.log(getUserProfile.data.message.uploadvideo) // Set user state with data from API response
                 dispatch(UserChannelActions.getuserChannel({ userChannel: getUserProfile.data }));
+                dispatch(UserUploadedVideoActions.getUserUploadedVideo({video:getUserProfile.data.message.uploadvideo}));
+                console(dispatch);
             } catch (error) {
                 console.error("Error getting user profile:", error);
             }

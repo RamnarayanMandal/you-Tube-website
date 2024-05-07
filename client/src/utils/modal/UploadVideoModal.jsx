@@ -18,7 +18,7 @@ export function UploadVideoModel() {
     <>
       <Button
         onClick={handleOpen}
-        className=" bg-white text-gray-400 shadow-none p-0 hover:shadow-none "
+        className=" bg-white text-black shadow-none p-0 hover:shadow-none "
       >
         <RiVideoUploadFill className="text-3xl"/> 
       </Button>

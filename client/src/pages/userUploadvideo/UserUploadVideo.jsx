@@ -57,7 +57,7 @@ const UserUploadVideo = ({ video }) => {
             </div> 
           </div>
           <div className='pt-5 cursor-pointer'>
-         <ThreeDotModal/>
+         <ThreeDotModal videoId={videoItem._id}/>
           </div>
         </div>
       ))}

@@ -12,9 +12,8 @@ import YourChannel from './pages/userchannel/YourChannel.jsx';
 import Dasbord from './pages/dashbord/Dasbord.jsx';
 import ViewFullPlaylist from './pages/playlist/ViewFullPlaylist.jsx';
 import AddVideoInPlaylist from './pages/playlist/AddVideoInPlaylist.jsx';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Playlist from './pages/playlist/Playlist.jsx';
+import GetvideoByID from './pages/dashbord/GetvideoByID.jsx';
 
 
 
@@ -31,7 +30,8 @@ const router = createBrowserRouter([
       { path: '/channel', element: <YourChannel /> },
       {path: '/viewfullplaylist/:playlistId', element: <ViewFullPlaylist/>},
       {path: '/addVideoInPlaylist/:playlistId', element: <AddVideoInPlaylist/>},
-      {path: '/playlist', element: <Playlist/>}
+      {path: '/playlist', element: <Playlist/>},
+      { path: '/video/:videoId', element: <GetvideoByID/> },
     
     ]
   }
@@ -42,7 +42,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
    <Provider store={youtubestore}>
     <RouterProvider router={router} />
-    <ToastContainer />
     </Provider>
   </React.StrictMode>
 );

@@ -9,6 +9,8 @@ import { Checkbox } from "@material-tailwind/react";
 import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from 'react-redux';
+import { UserUploadedVideoActions } from '../store/getUserUploadedVideo.slice';
 
 export function UploadVideoForm() {
   const [formData, setFormData] = useState({
@@ -20,7 +22,8 @@ export function UploadVideoForm() {
     owner: localStorage.getItem('user_id') || "", // Retrieve owner from localStorage
   });
 
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch(); // Loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +67,8 @@ export function UploadVideoForm() {
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log(response.data);
+      // console.log(response.data);
+      dispatch(UserUploadedVideoActions.addVideo({video: response.data.message}))
       toast.success("Video uploaded successfully!", {
         position: "top-center",
         autoClose: 5000,

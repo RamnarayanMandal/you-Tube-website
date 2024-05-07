@@ -224,10 +224,19 @@ const deleteVideo = asyncHandler(async (req, res) => {
     if(!videoId){
         throw new ApiError(400, "Video ID is required");
     }
-    const video = await Video.findByIdAndDelete(videoId?._id);
+    // console.log("videoId",videoId)
+    const video = await Video.findByIdAndDelete(videoId);
+
+    // console.log("video",video);
     if (!video) {
         throw new ApiError(404, "Video does not exist");
     }
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            video,
+            "Video is deleted successfully"
+        ))
 })
 
 const togglePublishStatus = asyncHandler(async (req, res) => {

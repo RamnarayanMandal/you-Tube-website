@@ -32,6 +32,7 @@ const Video = () => {
       try {
         const response = await axios.get('/v1/dashboard/videos');
         setVideos(response.data.message);
+        console.log(response.data.message[0]._id);
         dispatch(videoActions.getvideo(response.data.message));
       } catch (error) {
         console.error("Error fetching videos:", error);
@@ -42,7 +43,11 @@ const Video = () => {
   }, []);
 
   if (!videos || videos.length === 0) {
-    return <VideoModal />;
+    return (
+      <div className='flex justify-center content-center items-center w-full h-full my-32 lg:mx-60 md:mx-32 max-h-5 '>
+                 <div class="videoloader"></div>
+      </div>
+    )
   }
 
   const handleVideoError = (error, videoIndex) => {

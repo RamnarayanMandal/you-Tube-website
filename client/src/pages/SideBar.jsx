@@ -2,7 +2,6 @@ import React from "react";
 import { FaHome } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
 import { MdSubscriptions } from "react-icons/md";
-import { PiYoutubeLogoFill } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
 import { IoIosContact } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
@@ -10,7 +9,6 @@ import { RiPlayList2Fill } from "react-icons/ri";
 import { AiOutlineLike } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosNotifications } from "react-icons/io";
-import { RiVideoUploadFill } from "react-icons/ri";
 import { IoLogIn } from "react-icons/io5";
 import {Link, useNavigate} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
@@ -80,20 +78,20 @@ const SideBar = () => {
     }}>
       <div className="text-3xl px-5  bg-white ">
         <Link to="/" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          <FaHome className="my-1 text-gray-500" />
+          <FaHome className="my-1 " />
           <p className="text-sm">Home</p>
         </Link>
         <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          <SiYoutubeshorts className="my-1 text-gray-400" />
+          <SiYoutubeshorts className="my-1 " />
           <p className="text-sm">Shorts</p>
         </div>
         <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          <MdSubscriptions className="my-1 text-gray-400" />
+          <MdSubscriptions className="my-1 " />
           <p className="text-sm ">Subscriptions</p>
         </div>
         <hr />
         <div className="my-4 flex gap-1 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          {/* <PiYoutubeLogoFill className="my-1 text-gray-400" /> */}
+          {/* <PiYoutubeLogoFill className="my-1 " /> */}
           <p className="text-lg  font-bold">You</p>
           <IoIosArrowForward className="text-lg" />
         </div>
@@ -101,56 +99,56 @@ const SideBar = () => {
           <div className="text-3xl ">
           {!loginData?(<Link 
             to="/login" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <IoIosContact className="my-1 text-gray-400" />
+              <IoIosContact className="my-1 " />
               <p className="text-sm">Your Channel </p>
             </Link>):(
               <Link 
               to="/channel" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-                <IoIosContact className="my-1 text-gray-400" />
+                <IoIosContact className="my-1 " />
                 <p className="text-sm">Your Channel </p>
               </Link>
             )
 }
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <LuHistory className="my-1 text-gray-400" />
+              <LuHistory className="my-1 " />
               <p className="text-sm">History </p>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <Link to="/playlist"><RiPlayList2Fill className="my-1 text-gray-400" />
+              <Link to="/playlist" className="flex gap-4 justify-start items-center content-center"><RiPlayList2Fill className="my-1 " />
               <p className="text-sm">Playlist </p></Link>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <AiOutlineLike className="my-1 text-gray-400" />
+              <AiOutlineLike className="my-1 " />
               <p className="text-sm">Liked </p>
             </div>
             {
               !loginData?(
                 <Link to="/login" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 py-2 rounded-lg">
-              <UploadVideoModel className="my-1 text-gray-400"/>
+              <UploadVideoModel className="my-1 "/>
               <p className="text-sm">Upload </p>
             </Link>
                 
               ):(
                 <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 py-2 rounded-lg">
-              <UploadVideoModel className="my-1 text-gray-400"/>
+              <UploadVideoModel className="my-1 "/>
               <p className="text-sm">Upload </p>
             </div>
               )
             }
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg ">
-              <IoIosNotifications className="my-1 text-gray-400" />
+              <IoIosNotifications className="my-1 " />
               <p className="text-sm">Natification </p>
             </div>
           </div>
         </div>
         <hr />
         <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          <IoIosSend className="my-1 text-gray-400" />
+          <IoIosSend className="my-1 " />
           <p className="text-sm">Tweet</p>
         </div>
         <div  className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
           
-          <IoLogIn className="my-1 text-gray-400" />
+          <IoLogIn className="my-1 " />
           {
             loginData? (
               <p className="text-sm cursor-pointer" onClick={handleLogout}>Logout</p>

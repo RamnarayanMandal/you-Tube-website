@@ -1,12 +1,8 @@
+import React from 'react'
+import { NavBar } from '../NavBar'
+import SideBar from '../SideBar'
 
-import React from 'react';
-import UserPlaylist from '../playlist/UserPlaylist'
-import SideBar from '../SideBar';
-import { NavBar } from '../NavBar';
-const Playlist = () => {
-  
-  
- 
+const GetvideoByID = () => {
   return (
     <>
     <div className='fixed w-full bg-white shadow-sm z-50 top-0'>
@@ -16,10 +12,10 @@ const Playlist = () => {
       <div className="hidden lg:block md:block w-64">
         <SideBar/>
       </div>
-    <UserPlaylist/>
+    
     </div>
     </>
-  );
-};
+  )
+}
 
-export default Playlist;
+export default GetvideoByID
