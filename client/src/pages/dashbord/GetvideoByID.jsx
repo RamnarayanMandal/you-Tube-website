@@ -1,8 +1,11 @@
 import React from 'react'
 import { NavBar } from '../NavBar'
 import SideBar from '../SideBar'
+import { useParams } from 'react-router-dom'
 
 const GetvideoByID = () => {
+  const {videoId} = useParams();
+  console.log(videoId)
   return (
     <>
     <div className='fixed w-full bg-white shadow-sm z-50 top-0'>

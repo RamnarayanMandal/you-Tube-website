@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from "./pages/Login.jsx";
 import SingUp from "./pages/Singup.jsx";
@@ -24,7 +23,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { path: '/', element: <Dasbord /> },
+      // { path: '/', element: <Dasbord /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
       { path: '/channel', element: <YourChannel /> },
