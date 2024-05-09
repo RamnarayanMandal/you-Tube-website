@@ -12,6 +12,9 @@ const port=process.env.PORT||8080;
 
 connectDB()
 .then(()=>{
+    app.get('/', (req, res) => {
+        res.send('Hello World!')
+      })
     
     app.on('error',(error)=>{
         console.log("Error in server: "+error);
