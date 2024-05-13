@@ -8,11 +8,11 @@ import   '../src/index.css';
 import {Provider} from 'react-redux';
 import youtubestore from './store/index.js';
 import YourChannel from './pages/userchannel/YourChannel.jsx';
-import Dasbord from './pages/dashbord/Dasbord.jsx';
 import ViewFullPlaylist from './pages/playlist/ViewFullPlaylist.jsx';
 import AddVideoInPlaylist from './pages/playlist/AddVideoInPlaylist.jsx';
 import Playlist from './pages/playlist/Playlist.jsx';
 import GetvideoByID from './pages/dashbord/GetvideoByID.jsx';
+import Dashboard from './pages/dashbord/Dashboard.jsx';
 
 
 
@@ -23,14 +23,14 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      // { path: '/', element: <Dasbord /> },
+      { path: '/', element: <Dashboard /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
       { path: '/channel', element: <YourChannel /> },
       {path: '/viewfullplaylist/:playlistId', element: <ViewFullPlaylist/>},
       {path: '/addVideoInPlaylist/:playlistId', element: <AddVideoInPlaylist/>},
       {path: '/playlist', element: <Playlist/>},
-      { path: '/video/:videoId', element: <GetvideoByID/> },
+      { path: '/video/:videoId/:owner', element: <GetvideoByID/> },
     
     ]
   }
