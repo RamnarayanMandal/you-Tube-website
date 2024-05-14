@@ -177,6 +177,46 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     }
 });
 
+const getLikeVidees = asyncHandler(async (req, res) => {
+    const {videoId} = req.params;
+    if (!videoId) {
+        throw new ApiError(400, "Video ID is required");
+    }
+    const like = await Like.aggregate([
+        {
+          "$match": {
+            "video":new mongoose.Types.ObjectId(videoId) 
+          }
+        },
+        {
+          "$group": {
+            "_id": "$video",
+            "totalLikes": { "$sum": 1 },
+            "isLiked": { "$first": "$isLiked" }, 
+            "createdAt": { "$first": "$createdAt" }, 
+            "likeBy": { "$first": "$likeBy" } 
+          }
+        },
+        {
+          "$project": {
+            "totalLikes": 1,
+            "isLiked": 1,
+            "createdAt": 1,
+            "likeBy": 1
+          }
+        }
+      ]
+      )
+
+   if(!like){
+    throw new ApiError(500, "like is not available for this video");
+   }
+
+   return res.status(200).json(new ApiResponse(200, like ," totalLikes is fetched successfully"))
+
+
+});
+
 export {
     toggleVideoLike,
     toggleVideoDisLike,
@@ -184,5 +224,6 @@ export {
     toggleCommentDisLike,
     toggleTweetLike,
     toggleTweetDisLike,
-    getLikedVideos
+    getLikedVideos,
+    getLikeVidees
 };
