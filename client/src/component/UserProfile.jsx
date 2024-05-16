@@ -7,20 +7,23 @@ import LoadingSpiner from '../utils/modal/LoadingSpiner';
 import UserUploadVideo from '../pages/userUploadvideo/UserUploadVideo';
 import { UserChannelActions } from '../store/UserChannel';
 import { UserUploadedVideoActions } from '../store/getUserUploadedVideo.slice';
+import coverImgage from '../assets/coverImg.png'
 
 
 
 
-const UserProfile = () => {
+const UserProfile = ({username,userId}) => {
     const dispatch = useDispatch();
-    const [user, setUser] = useState(null); // Initialize user state to null
+    const [user, setUser] = useState(null);
+    const [getSubscriber,setGetSubscriber] = useState();// Initialize user state to null
     const [activeTab, setActiveTab] = useState('home'); // State to track active tab
     const { loginData } = useSelector((store) => store.login);
-    const username = loginData?.message?.user?.username.toLowerCase();
     
+  const token = localStorage.getItem("accessToken"); 
+  
 
     useEffect(() => {
-        const token = localStorage.getItem("accessToken");
+       
       
         const fetchData = async () => {
             try {
@@ -41,7 +44,24 @@ const UserProfile = () => {
         };
       
         fetchData();
-    }, []);
+    }, [username]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`/v1/subscriptions/c/${userId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            setGetSubscriber(response.data);
+          } catch (error) {
+            console.error("Error fetching subscriber:", error);
+          }
+        };
+    
+        fetchData();
+      }, [userId, token]);
 
     if (!user) {
         return <LoadingSpiner/>; 
@@ -51,9 +71,19 @@ const UserProfile = () => {
         setActiveTab(tab);
     };
  
-    return (
+    return ( 
         <div>
+               {user.coverImage?(<div className='overflow-hidden object-cover px-10 '>
+                    <img src={user.coverImage} alt="avatar" className='w-[200vh] h-[30vmin] rounded-xl' />
+                </div>):(
+                    <div className='overflow-hidden object-cover px-10 ' >
+                       <img src={coverImgage} alt="avatar" className='w-[200vh] h-[30vmin] rounded-xl' />
+                    </div>
+                )
+
+               }
             <section className='flex justify-start lg:pl-20 md:pl-10 lg:p-5 pt-5 w-full  lg:gap-10  md:gap-5 gap-2 '>
+            
                 <div className='overflow-hidden object-cover'>
                     <img src={user.avatar} alt="avatar" className='rounded-full w-32 h-32 lg:w-52 lg:h-52 md:w-40 md:h-40' />
                 </div>
@@ -61,7 +91,7 @@ const UserProfile = () => {
                     <h1 className='lg:text-3xl md:text-2xl text-lg font-bold'>{user.fullName}</h1>
                     <div className='flex flex-wrap lg:gap-3 md:gap-2 gap-0 text-gray-500 text-sm lg:my-1'>
                         <p>{user.username}.</p>
-                        <p>{user.SubcriberCount} subscriber .</p>
+                        <p>{getSubscriber?.data[0]?.subscriberCount} subscriber .</p>
                         <p>{user.uploadvideoCount} video</p>
                     </div>
                     <div className='text-gray-500 lg:text-lg md:text-lg text-sm flex gap-1 items-center content-center'>
@@ -84,10 +114,10 @@ const UserProfile = () => {
                 {activeTab === 'home' &&
                 <>
                  <UserUploadVideo video={user.uploadvideo} />
-                <UserPlaylist />
+                <UserPlaylist userId={userId} />
                 </>}
                 {activeTab === 'videos' && <UserUploadVideo video={user.uploadvideo} />}
-                {activeTab === 'playlist' && <UserPlaylist />}
+                {activeTab === 'playlist' && <UserPlaylist userId={userId} />}
             </section>
         </div>
     );

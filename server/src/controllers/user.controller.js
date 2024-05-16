@@ -509,6 +509,37 @@ const getUserById = asyncHandler(async(req,res)=>{
 })
 
 
+const addWatchHistory = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+
+  if (!videoId) {
+    throw new ApiError(400, "Video id is missing");
+  }
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $push: {
+        watchHistory: videoId
+      }
+    },
+    {
+      new: true
+    }
+    ).select("-password");
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    return res
+     .status(200)
+     .json(
+        new ApiResponse(200, user, "Video added to watch history successfully")
+      );
+
+  })
+
+
 
 export {
    registerUser,
@@ -523,4 +554,5 @@ export {
    getUserChannelProfile,
    getWatchHistory,
    getUserById,
+   addWatchHistory
    };

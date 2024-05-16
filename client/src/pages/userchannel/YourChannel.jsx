@@ -2,10 +2,12 @@ import React from 'react'
 import { NavBar } from '../NavBar'
 import SideBar from '../SideBar'
 import UserProfile from '../../component/UserProfile'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 
 const YourChannel = () => {
+  const {username,userId} = useParams();
+
   return (
     <div>
       <div className='fixed w-full bg-white shadow-sm z-50 top-0'>
@@ -16,7 +18,7 @@ const YourChannel = () => {
         <SideBar/>
       </div>
       <div className='w-full mt-32 '>
-        <UserProfile/>
+        <UserProfile username={username} userId={userId}/>
       </div>
       </div>
     </div>

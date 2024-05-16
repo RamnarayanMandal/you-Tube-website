@@ -19,16 +19,19 @@ const GetvideoByID = () => {
   const [Comments, setComments] = useState([]);
   const [userComment, setUserComment] = useState("");
   const [showAllComments, setShowAllComments] = useState(false);
-  const [like , setLike] = useState([]);
-  console.log(like);
+  const [like, setLike] = useState([]);
+  const [checkSubscriber, setCheckSubscriber] = useState([]);
+  const [getSubscriber, setGetSubscriber] = useState();
   const initialCommentCount = 2;
+  
 
   const token = localStorage.getItem("accessToken");
+  const user_id = localStorage.getItem("user_id");
   const dispatch = useDispatch();
   const { loginData } = useSelector((store) => store.login);
   const { video } = useSelector((store) => store.video);
   const avatar = loginData?.message?.user?.avatar;
- 
+
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -43,7 +46,23 @@ const GetvideoByID = () => {
       }
     };
     fetchVideos();
-  }, [videoId]);
+  }, [videoId, token]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.patch(`/v1/user/${videoId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Add Watch history"+ res);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+    fetchUser();
+  }, [owner, token]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -59,7 +78,7 @@ const GetvideoByID = () => {
       }
     };
     fetchUser();
-  }, [owner]);
+  }, [owner, token]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,8 +104,44 @@ const GetvideoByID = () => {
     };
 
     fetchData();
-  }, [videoId, token]);
+  }, [videoId, token, dispatch]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `/v1/subscriptions/checkSubscriber/${user_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCheckSubscriber(response.data);
+      } catch (error) {
+        console.error("Error fetching checkSubscriber:", error);
+      }
+    };
+
+    fetchData();
+  }, [user_id, token]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/v1/subscriptions/c/${videos.video.owner}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setGetSubscriber(response.data);
+      } catch (error) {
+        console.error("Error fetching subscriber:", error);
+      }
+    };
+
+    fetchData();
+  }, [user_id, token]);
 
   function calculateDuration(updatedAtDate) {
     const currentDate = new Date();
@@ -135,22 +190,41 @@ const GetvideoByID = () => {
     }
   };
 
-  const handleLike= async () => {
+  const handleLike = async () => {
     try {
-      const response = await axios.post(`/v1/like/toggle/v/${videoId}`,
+      const response = await axios.post(
+        `/v1/like/toggle/v/${videoId}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
+      );
       console.log(response.data.message);
-      setLike(response.data.message)
+      setLike(response.data.message);
     } catch (error) {
-       confirm("Error posting comment:", error);
+      console.error("Error toggling like:", error);
     }
+  };
 
-  }
+  const subscribed = async () => {
+    try {
+      const response = await axios.post(
+        `/v1/subscriptions/c/${user_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data.message);
+      setCheckSubscriber(response.data.message);
+    } catch (error) {
+      console.error("Error subscribing:", error);
+    }
+  };
 
   return (
     <>
@@ -173,7 +247,10 @@ const GetvideoByID = () => {
             </h1>
             <div className="flex justify-between gap-2 items-center content-center mt-2">
               <div className="flex justify-start gap-2 items-center content-center">
-                <div className=" flex gap-2 content-center items-center">
+                <Link
+                  to={`/channel/${user?.username}/${user?._id}`}
+                  className=" flex gap-2 content-center items-center"
+                >
                   {user?.avatar ? (
                     <img
                       src={user?.avatar}
@@ -183,24 +260,30 @@ const GetvideoByID = () => {
                   ) : (
                     <RxAvatar className="lg:w-12 lg:h-12 md:w-12 md:h-12 w-10 h-10 rounded-full " />
                   )}
-                </div>
+                </Link>
                 <div>
                   <h1 className="lg:text-lg md:text-base text-sm ">
                     {user?.username}
                   </h1>
                   <p className="text-xs text-gray-400">
-                    {user?.SubcriberCount} subscribers
+                    {getSubscriber?.data[0]?.subscriberCount} subscribers
                   </p>
                 </div>
-                <div>
-                  <button className=" bg-black text-white lg:px-4 lg:py-2 lg:text-lg md:text-base text-sm rounded-full px-2 py-1 ">
-                    subscribe
-                  </button>
+                <div onClick={subscribed}>
+                  {checkSubscriber?.data?.length!=0? (
+                    <button className="lg:text-lg md:text-base text-sm bg-gray-900  text-white px-4 py-2 rounded-full">
+                      Subscribed
+                    </button>
+                  ) : (
+                    <button className="lg:text-lg md:text-base text-sm  bg-blue-600 text-white px-4 py-2 rounded-full">
+                      Subscribe
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="flex justify-start content-center items-center gap-2 lg:text-3xl md:text-xl text-base">
                 <div className="flex justify-start content-center items-center gap-4 bg-gray-200 px-4 py-2 rounded-full">
-                  <AiOutlineLike onClick={handleLike}/>
+                  <AiOutlineLike onClick={handleLike} />
                   <p className="lg:text-xl text-sm">{videos?.totalLikes}</p>
                   <p className="lg:text-xl text-sm">|</p>
                   <BiDislike />
@@ -231,62 +314,65 @@ const GetvideoByID = () => {
           </div>
           {/* comment box */}
           <div className="mt-4">
-          <p className="text-xl font-semibold my-4">
-          {videos?.totalComments} Comments
-           </p>
-        <div className="flex justify-start content-center items-center gap-5 w-full">
-          <img
-            src={avatar}
-            alt="avatar"
-            className="w-12 h-12 rounded-full"
-          />
-          <Input
-            label="Comment"
-            value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-          />
-          <button className="text-2xl" onClick={PostComment}>
-            <LuSend />
-          </button>
-        </div>
-        <hr className="my-2" />
-        {/* Display comments */}
-        {Comments.slice(0, showAllComments ? Comments.length : initialCommentCount).map((comment) => (
-          <div key={comment._id}>
-            <div className="flex justify-start content-center items-center gap-5 my-2">
+            <p className="text-xl font-semibold my-4">
+              {videos?.totalComments} Comments
+            </p>
+            <div className="flex justify-start content-center items-center gap-5 w-full">
               <img
-                src={comment.avatar}
+                src={avatar}
                 alt="avatar"
                 className="w-12 h-12 rounded-full"
-              />{" "}
-              <p className="text-gray-700">{comment.username}</p>
+              />
+              <Input
+                label="Comment"
+                value={userComment}
+                onChange={(e) => setUserComment(e.target.value)}
+              />
+              <button className="text-2xl" onClick={PostComment}>
+                <LuSend />
+              </button>
             </div>
-            <div className="flex pl-20 content-center items-center gap-5 my-2">
-              <p className="text-gray-700 text-base">{comment.comment}</p>
-              <p className=" text-xs text-gray-800 ">
-                {calculateDuration(new Date(comment.updatedAt))}
-              </p>
-            </div>
+            <hr className="my-2" />
+            {/* Display comments */}
+            {Comments.slice(
+              0,
+              showAllComments ? Comments.length : initialCommentCount
+            ).map((comment) => (
+              <div key={comment._id}>
+                <div className="flex justify-start content-center items-center gap-5 my-2">
+                  <img
+                    src={comment.avatar}
+                    alt="avatar"
+                    className="w-12 h-12 rounded-full"
+                  />{" "}
+                  <p className="text-gray-700">{comment.username}</p>
+                </div>
+                <div className="flex pl-20 content-center items-center gap-5 my-2">
+                  <p className="text-gray-700 text-base">{comment.comment}</p>
+                  <p className=" text-xs text-gray-800 ">
+                    {calculateDuration(new Date(comment.updatedAt))}
+                  </p>
+                </div>
+              </div>
+            ))}
+            {/* Show more button */}
+            {!showAllComments && Comments.length > initialCommentCount && (
+              <button
+                className="text-blue-500 my-2 px-5 font-semibold text-xl"
+                onClick={() => setShowAllComments(true)}
+              >
+                Show more
+              </button>
+            )}
+            {showAllComments && Comments.length > initialCommentCount && (
+              <button
+                className="text-blue-500 my-2 px-5 font-semibold text-xl"
+                onClick={() => setShowAllComments(false)}
+              >
+                Show less
+              </button>
+            )}
           </div>
-        ))}
-        {/* Show more button */}
-        {!showAllComments && Comments.length > initialCommentCount && (
-          <button
-            className="text-blue-500 my-2 px-5 font-semibold text-xl"
-            onClick={() => setShowAllComments(true)}
-          >
-            Show more 
-          </button>
-        )}
-        {showAllComments && Comments.length > initialCommentCount && (
-          <button
-            className="text-blue-500 my-2 px-5 font-semibold text-xl"
-            onClick={() => setShowAllComments(false)}
-          >
-            Show less
-          </button>
-        )}
-      </div>
         </div>
         <div className="lg:w-1/3 h-full md:w-1/2 w-full px-10">
           {video?.map((videos) => (

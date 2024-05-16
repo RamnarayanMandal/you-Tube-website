@@ -151,8 +151,44 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
     }
 });
 
+const checkSubcriber = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    if (!userId) {
+        throw new ApiError(400, "Invalid Subscriber ID");
+    }
+    try {
+        const user = await Subcription.aggregate([
+            {
+                $match: {
+                    subscriber:new mongoose.Types.ObjectId(userId)
+                },
+                
+            },
+            {
+                "$group": {
+                  "_id": "$subscriber",
+                  "count": { "$sum": 1 }
+                }
+              },
+        ]);
+        
+        res.status(200).json({
+            success: true,
+            data: user,
+            message: "Subscribed Channels fetched successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+
 export {
     toggleSubscription,
     getUserChannelSubscribers,
-    getSubscribedChannels
+    getSubscribedChannels,
+    checkSubcriber
 };

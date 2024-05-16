@@ -22,7 +22,9 @@ const SideBar = () => {
   const {loginData} = useSelector((store)=> store.login)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const username = loginData?.message?.user?.username.toLowerCase();
+  const id = loginData?.message?.user?._id;
+  // console.log(id);
   const handleLogout = async () => {
     const token = localStorage.getItem("accessToken");
 
@@ -103,7 +105,7 @@ const SideBar = () => {
               <p className="text-sm">Your Channel </p>
             </Link>):(
               <Link 
-              to="/channel" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
+              to={`/channel/${username}/${id}`} className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
                 <IoIosContact className="my-1 " />
                 <p className="text-sm">Your Channel </p>
               </Link>
@@ -114,8 +116,8 @@ const SideBar = () => {
               <p className="text-sm">History </p>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <Link to="/playlist" className="flex gap-4 justify-start items-center content-center"><RiPlayList2Fill className="my-1 " />
-              <p className="text-sm">Playlist </p></Link>
+              <Link to={`/playlist/${id}`} className="flex gap-4 justify-start items-center content-center"><RiPlayList2Fill className="my-1 " />
+              <p className="text-sm">Playlist</p></Link>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <AiOutlineLike className="my-1 " />

@@ -28,17 +28,15 @@ function calculateDuration(updatedAtDate) {
   }
 }
 
-const UserPlaylist = () => {
+const UserPlaylist = ({userId}) => {
   const [playlists, setPlaylists] = useState([]);
   const dispatch = useDispatch();
-  // console.log(playlists)
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
         const token = localStorage.getItem("access_token");
-        const user_id = localStorage.getItem("user_id");
-
-        const response = await axios.get(`/v1/playlist/user/${user_id}`, {
+      
+        const response = await axios.get(`/v1/playlist/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

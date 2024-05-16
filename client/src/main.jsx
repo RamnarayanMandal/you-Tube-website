@@ -26,10 +26,10 @@ const router = createBrowserRouter([
       { path: '/', element: <Dashboard /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
-      { path: '/channel', element: <YourChannel /> },
+      { path: '/channel/:username/:userId', element: <YourChannel /> },
       {path: '/viewfullplaylist/:playlistId', element: <ViewFullPlaylist/>},
       {path: '/addVideoInPlaylist/:playlistId', element: <AddVideoInPlaylist/>},
-      {path: '/playlist', element: <Playlist/>},
+      {path: '/playlist/:userId', element: <Playlist/>},
       { path: '/video/:videoId/:owner', element: <GetvideoByID/> },
     
     ]
