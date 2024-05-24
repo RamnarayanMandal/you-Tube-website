@@ -13,6 +13,8 @@ import AddVideoInPlaylist from './pages/playlist/AddVideoInPlaylist.jsx';
 import Playlist from './pages/playlist/Playlist.jsx';
 import GetvideoByID from './pages/dashbord/GetvideoByID.jsx';
 import Dashboard from './pages/dashbord/Dashboard.jsx';
+import WatchHistory from './pages/history/WatchHistory.jsx';
+import LIkedVideo from './pages/Liked/LIkedVideo.jsx';
 
 
 
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
       {path: '/addVideoInPlaylist/:playlistId', element: <AddVideoInPlaylist/>},
       {path: '/playlist/:userId', element: <Playlist/>},
       { path: '/video/:videoId/:owner', element: <GetvideoByID/> },
+      {path:'/history', element: <WatchHistory/>},
+      {path:'/likedVideo', element: <LIkedVideo/>},
     
     ]
   }

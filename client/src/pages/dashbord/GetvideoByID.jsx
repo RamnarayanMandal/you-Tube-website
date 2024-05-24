@@ -226,6 +226,26 @@ const GetvideoByID = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.put(
+          `/v1/videos/view/${videoId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCheckSubscriber(response.data);
+      } catch (error) {
+        console.error("Error fetching checkSubscriber:", error);
+      }
+    };
+    fetchData();
+
+  },[])
+
   return (
     <>
       <div className="fixed w-full bg-white shadow-sm z-50 top-0">

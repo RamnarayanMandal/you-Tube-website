@@ -99,7 +99,7 @@ const SideBar = () => {
         </div>
         <div className="flex justify-center content-center items-center">
           <div className="text-3xl ">
-          {!loginData?(<Link 
+          {!loginData?(<Link  
             to="/login" className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <IoIosContact className="my-1 " />
               <p className="text-sm">Your Channel </p>
@@ -112,16 +112,30 @@ const SideBar = () => {
             )
 }
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <LuHistory className="my-1 " />
-              <p className="text-sm">History </p>
+              {
+                !loginData?(<Link to="/login" className="flex justify-start items-center content-center gap-4">
+                <LuHistory className="my-1 " />
+                <p className="text-sm">History </p>
+                </Link>):(<Link to="/history" className="flex justify-start items-center content-center gap-4">
+                <LuHistory className="my-1 " />
+                <p className="text-sm">History </p>
+                </Link>)
+              }
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
               <Link to={`/playlist/${id}`} className="flex gap-4 justify-start items-center content-center"><RiPlayList2Fill className="my-1 " />
               <p className="text-sm">Playlist</p></Link>
             </div>
             <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-              <AiOutlineLike className="my-1 " />
-              <p className="text-sm">Liked </p>
+              {
+                !loginData?(<Link to='/login' className="flex justify-start items-center content-center gap-4">
+                <AiOutlineLike className="my-1 " />
+                <p className="text-sm">Liked </p>
+                </Link>):(<Link to='/likedVideo' className="flex justify-start items-center content-center gap-4">
+                <AiOutlineLike className="my-1 " />
+                <p className="text-sm">Liked </p>
+                </Link>)
+              }
             </div>
             {
               !loginData?(

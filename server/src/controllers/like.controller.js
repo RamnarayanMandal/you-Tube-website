@@ -164,18 +164,43 @@ const toggleTweetDisLike = asyncHandler(async (req, res) => {
 
 // Get all liked videos
 const getLikedVideos = asyncHandler(async (req, res) => {
+    const { likeBy } = req.params;
+    if (!likeBy) {
+        throw new ApiError(400, "User ID is required");
+    }
     try {
+        const likedVideos = await Like.aggregate([
+            {
+                $match: {
+                    likeBy: new mongoose.Types.ObjectId(likeBy),
+                    // isLiked: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'videos', // The name of the video collection
+                    localField: 'video',
+                    foreignField: '_id',
+                    as: 'videoDetails'
+                }
+            },
+            {
+                $unwind: '$videoDetails' // Unwind the array to get objects
+            },
+            {
+                $project: {
+                    _id: 0,
+                    videoDetails: 1
+                }
+            }
+        ]);
 
-        const likes = await Like.find({ likeBy: req.user._id });
-
-       
-        const videoIds = likes.map(like => like.video);
-
-        return res.status(200).json(new ApiResponse(200, videoIds, "Liked videos fetched successfully"));
+        return res.status(200).json(new ApiResponse(200, likedVideos, "Liked videos fetched successfully"));
     } catch (error) {
         throw new ApiError(500, error.message);
     }
 });
+
 
 const getLikeVidees = asyncHandler(async (req, res) => {
     const {videoId} = req.params;

@@ -16,9 +16,7 @@ connectDB()
         res.send('Hello World!')
       })
     
-    app.get('/', (req, res) => {
-        res.send('Hello World!')
-      })
+    
 
     app.on('error',(error)=>{
         console.log("Error in server: "+error);

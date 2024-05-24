@@ -268,11 +268,59 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
         ))
 })
 
+
+
+
+const updateView = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+
+  console.log(`Received request to update views for videoId: ${videoId}`);
+  
+  if (!videoId) {
+    throw new ApiError(400, "Video ID is required");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(videoId)) {
+    console.error(`Invalid Video ID format: ${videoId}`);
+    throw new ApiError(400, "Invalid Video ID format");
+  }
+
+  try {
+    const video = await Video.findByIdAndUpdate(
+      videoId,
+      { $inc: { views: 1 } },
+      { new: true }
+    );
+
+    if (!video) {
+      console.error(`Video with ID ${videoId} does not exist`);
+      throw new ApiError(404, "Video does not exist");
+    }
+
+    console.log(`Successfully updated views for videoId: ${videoId}`);
+    res.status(200).json(
+      new ApiResponse(
+        200,
+        video,
+        "Video views updated successfully"
+      )
+    );
+  } catch (error) {
+    console.error(`Error updating views for videoId: ${videoId}`, error);
+    throw new ApiError(500, "Internal Server Error");
+  }
+});
+
+
+
+  
+
 export {
     getAllVideos,
     publishAVideo,
     getVideoById,
     updateVideo,
     deleteVideo,
-    togglePublishStatus
+    togglePublishStatus,
+    updateView
 }
