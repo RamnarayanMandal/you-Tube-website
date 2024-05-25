@@ -173,7 +173,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
             {
                 $match: {
                     likeBy: new mongoose.Types.ObjectId(likeBy),
-                    // isLiked: true
+                     isLiked: true
                 }
             },
             {
@@ -184,9 +184,9 @@ const getLikedVideos = asyncHandler(async (req, res) => {
                     as: 'videoDetails'
                 }
             },
-            {
-                $unwind: '$videoDetails' // Unwind the array to get objects
-            },
+            // {
+            //     $unwind: '$videoDetails' // Unwind the array to get objects
+            // },
             {
                 $project: {
                     _id: 0,

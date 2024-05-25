@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 const WatchHistory = () => {
   const [watchHistory, setWatchHistory] = useState([]);
+  console.log(watchHistory);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +67,8 @@ const WatchHistory = () => {
                 <div>
                   <div className="flex gap-2 my-4">
                     {video.owner.map((owner, idx) => (
-                      <Link key={idx} to={`/video/${video._id}/${owner._id}`}>
+                      <Link key={idx} to={`/video/${video._id}/${owner.username
+                      }`}>
                         <img
                           src={owner.avatar}
                           alt="avatar"
