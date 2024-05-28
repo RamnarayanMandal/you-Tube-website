@@ -1,14 +1,14 @@
 import React from "react";
 import { FaHome } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
-import { MdSubscriptions } from "react-icons/md";
+
 import { IoIosSend } from "react-icons/io";
 import { IoIosContact } from "react-icons/io";
 import { LuHistory } from "react-icons/lu";
 import { RiPlayList2Fill } from "react-icons/ri";
 import { AiOutlineLike } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { IoIosNotifications } from "react-icons/io";
+
 import { IoLogIn } from "react-icons/io5";
 import {Link, useNavigate} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginActions } from "../store/Login.slice";
 import { UploadVideoModel } from "../utils/modal/UploadVideoModal";
-
+import { IoSettings } from "react-icons/io5";
 const SideBar = () => {
   const {loginData} = useSelector((store)=> store.login)
   const dispatch = useDispatch();
@@ -87,10 +87,7 @@ const SideBar = () => {
           <SiYoutubeshorts className="my-1 " />
           <p className="text-sm">Shorts</p>
         </div>
-        <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
-          <MdSubscriptions className="my-1 " />
-          <p className="text-sm ">Subscriptions</p>
-        </div>
+
         <hr />
         <div className="my-4 flex gap-1 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
           {/* <PiYoutubeLogoFill className="my-1 " /> */}
@@ -151,16 +148,24 @@ const SideBar = () => {
             </div>
               )
             }
-            <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg ">
-              <IoIosNotifications className="my-1 " />
-              <p className="text-sm">Natification </p>
-            </div>
+    
           </div>
         </div>
         <hr />
         <div className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
           <IoIosSend className="my-1 " />
           <p className="text-sm">Tweet</p>
+        </div>
+        <div  className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
+          
+          <IoSettings  className="my-1 " />
+          {
+            loginData? (
+              <Link to="/setting" className="text-sm cursor-pointer">Setting</Link>
+            ) : (
+              <Link to="/login" className="text-sm">Setting</Link>
+            )
+          }
         </div>
         <div  className="my-4 flex gap-4 justify-start items-center content-center hover:bg-blue-gray-50  px-4 rounded-lg">
           
@@ -174,6 +179,7 @@ const SideBar = () => {
           }
         </div>
         
+       
       </div>
     </div>
     </>

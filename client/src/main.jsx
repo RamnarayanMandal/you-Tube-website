@@ -15,6 +15,7 @@ import GetvideoByID from './pages/dashbord/GetvideoByID.jsx';
 import Dashboard from './pages/dashbord/Dashboard.jsx';
 import WatchHistory from './pages/history/WatchHistory.jsx';
 import LIkedVideo from './pages/Liked/LIkedVideo.jsx';
+import SettingHomePage from './pages/setting/SettingHomePage.jsx';
 
 
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: '/', element: <Dashboard /> },
+      {path:"/search/:query", element:<Dashboard />},
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <SingUp /> },
       { path: '/channel/:username/:userId', element: <YourChannel /> },
@@ -35,6 +37,7 @@ const router = createBrowserRouter([
       { path: '/video/:videoId/:owner', element: <GetvideoByID/> },
       {path:'/history', element: <WatchHistory/>},
       {path:'/likedVideo', element: <LIkedVideo/>},
+      { path: '/setting', element: <SettingHomePage/> },
     
     ]
   }

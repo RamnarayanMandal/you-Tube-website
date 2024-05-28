@@ -6,7 +6,6 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { FaYoutube } from "react-icons/fa";
-import { IoIosNotifications } from "react-icons/io";
 import { IoIosContact } from "react-icons/io";
 import { SideBarModule } from "../module/sideBar.module";
 import { useSelector } from "react-redux";
@@ -16,7 +15,6 @@ import Logout from "../component/Logout";
 
 export function NavBar() {
   const { loginData } = useSelector((store) => store.login);
-  const [openNav, setOpenNav] = React.useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -34,7 +32,7 @@ export function NavBar() {
     event.preventDefault();
     if (searchQuery.trim() !== "") {
       // Redirect to the search results page with the query
-      navigate(`/search?query=${searchQuery}`);
+      navigate(`/search/${searchQuery}`);
     }
   };
 
@@ -53,7 +51,7 @@ export function NavBar() {
             <UploadVideoModel />
           </Link>
         )}
-        <IoIosNotifications />
+       
         <div className="flex gap-2 text-sm content-center items-center ">
           {avatarUrl ? (
             <img
